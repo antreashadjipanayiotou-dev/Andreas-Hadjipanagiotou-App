@@ -13,7 +13,7 @@ jobs:
 
       - name: Extract Android project
         run: |
-          unzip -q Andreas-Hadjipanayiotou-Final-Android-App.zip -d extracted
+          unzip -o Andreas-Hadjipanayiotou-Final-Android-App.zip -d extracted
           cp -r extracted/AndreasAppFinal/. .
           rm -rf extracted
 
@@ -28,10 +28,14 @@ jobs:
         with:
           gradle-version: '8.10.2'
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Install Android SDK 36
         run: |
           yes | sdkmanager --licenses || true
           sdkmanager "platforms;android-36"
+          sdkmanager "build-tools;35.0.0"
 
       - name: Build APK
         run: gradle assembleDebug --no-daemon
@@ -39,5 +43,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Andreas-Hadjipanagiotou-APK
+          name: Andreas-Hadjipanayiotou-APK
           path: app/build/outputs/apk/debug/app-debug.apk
