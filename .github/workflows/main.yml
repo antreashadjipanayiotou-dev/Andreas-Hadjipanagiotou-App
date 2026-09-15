@@ -30,13 +30,14 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
-
       - name: Install Android SDK 36
         run: |
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
+          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
           yes | sdkmanager --licenses || true
           sdkmanager "platforms;android-36"
           sdkmanager "build-tools;35.0.0"
-
+      
       - name: Build APK
         run: gradle assembleDebug --no-daemon
 
